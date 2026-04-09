@@ -1,4 +1,3 @@
-# app/queue.py
 import redis
 import json
 import os

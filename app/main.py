@@ -1,4 +1,3 @@
-# app/main.py
 from fastapi import FastAPI, Request
 from app.queue import enqueue_comment
 

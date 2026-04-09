@@ -1,4 +1,3 @@
-# app/classifier.py
 from openai import OpenAI
 import os
 
