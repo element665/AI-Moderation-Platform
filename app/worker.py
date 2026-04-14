@@ -1,4 +1,5 @@
 import os
+import time
 
 import requests
 
@@ -63,15 +64,18 @@ def run_worker():
             )
         except Exception as exc:
             if retry_count < MAX_RETRIES:
+                delay_seconds = 2 ** retry_count
                 comment["retry_count"] = retry_count + 1
                 log_event(
                     logger,
                     "comment_processing_retry",
                     retry_attempt=comment["retry_count"],
                     max_retries=MAX_RETRIES,
+                    delay_seconds=delay_seconds,
                     reason=str(exc),
                     platform=comment.get("platform", "unknown"),
                 )
+                time.sleep(delay_seconds)
                 enqueue_comment(comment)
                 continue
 
