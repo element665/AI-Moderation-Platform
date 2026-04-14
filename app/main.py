@@ -1,7 +1,9 @@
 from fastapi import FastAPI, Request
+from app.logging_utils import get_logger, log_event
 from app.queue import enqueue_comment
 
 app = FastAPI()
+logger = get_logger(__name__)
 
 @app.get("/")
 def health():
@@ -17,5 +19,12 @@ async def webhook(request: Request):
         "user": payload.get("user", "anon"),
     }
 
+    log_event(
+        logger,
+        "comment_ingested",
+        platform=comment["platform"],
+        user=comment["user"],
+        has_text=bool(comment["text"]),
+    )
     enqueue_comment(comment)
     return {"queued": True}
