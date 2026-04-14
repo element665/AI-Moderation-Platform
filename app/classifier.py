@@ -10,6 +10,24 @@ logger = get_logger(__name__)
 def classify(text: str):
     log_event(logger, "classification_started", text_length=len(text or ""))
 
+    if os.getenv("USE_MOCK_CLASSIFIER", "false").lower() == "true":
+        normalized_text = (text or "").lower()
+
+        if any(word in normalized_text for word in ["scam", "garbage", "fake", "spam"]):
+            result = {"label": "toxic", "confidence": 0.9, "reason": "mock classifier"}
+        elif any(word in normalized_text for word in ["buy", "http", "link"]):
+            result = {"label": "spam", "confidence": 0.85, "reason": "mock classifier"}
+        else:
+            result = {"label": "neutral", "confidence": 0.8, "reason": "mock classifier"}
+
+        log_event(
+            logger,
+            "classification_completed",
+            label=result.get("label"),
+            confidence=result.get("confidence"),
+        )
+        return result
+
     prompt = f"""
     Classify this comment as spam, toxic, or neutral.
     Return JSON with label, confidence, and reason.
