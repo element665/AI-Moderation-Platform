@@ -212,6 +212,14 @@ This project is evolving toward a **real-time Trust & Safety platform**, capable
 
 ---
 
+## 📚 Documentation
+
+- [Project Context](docs/PROJECT_CONTEXT.md)
+- [Architecture](docs/ARCHITECTURE.md)
+- [Tasks & Roadmap](docs/TASKS.md)
+
+---
+
 ## 🤝 Contributing
 
 This is currently a personal/portfolio project, but contributions and ideas are welcome.
